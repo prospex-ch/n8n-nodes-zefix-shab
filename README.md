@@ -8,6 +8,9 @@ the register publishes something about a company you watch.
 Built and maintained by [Prospex](https://prospex.ch), a Swiss B2B sales
 intelligence platform.
 
+Full documentation:
+[n8n-nodes-zefix-shab.readthedocs.io](https://n8n-nodes-zefix-shab.readthedocs.io).
+
 ## Install
 
 In n8n: **Settings → Community nodes → Install**, then `n8n-nodes-zefix-shab`.
