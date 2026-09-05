@@ -13,7 +13,7 @@ export class ZefixApi implements ICredentialType {
 
 	displayName = 'Zefix API';
 
-	icon: Icon = 'file:zefixShab.svg';
+	icon: Icon = { light: 'file:zefixShab.svg', dark: 'file:zefixShab.dark.svg' };
 
 	documentationUrl = 'https://prospex.ch/guides/zefix-rest-api/';
 

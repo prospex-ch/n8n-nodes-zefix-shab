@@ -6,8 +6,9 @@ import type {
 	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
+	JsonObject,
 } from 'n8n-workflow';
-import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 
 import { companyFields, companyOperations } from './descriptions/CompanyDescription';
 import { publicationFields, publicationOperations } from './descriptions/PublicationDescription';
@@ -76,7 +77,7 @@ export class ZefixShab implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zefix and SHAB',
 		name: 'zefixShab',
-		icon: 'file:zefixShab.svg',
+		icon: { light: 'file:zefixShab.svg', dark: 'file:zefixShab.dark.svg' },
 		group: ['input'],
 		version: [1],
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
@@ -197,9 +198,15 @@ export class ZefixShab implements INodeType {
 					returned.push({ json: { error: (error as Error).message }, pairedItem: i });
 					continue;
 				}
-				if (error.context) {
+				// The transport layer already raises NodeApiError and NodeOperationError.
+				// Either constructor hands back an instance of its own class untouched,
+				// so the item index is stamped first and the wrap below only rebuilds
+				// errors that arrive raw.
+				if (error instanceof NodeApiError || error instanceof NodeOperationError) {
 					error.context.itemIndex = i;
-					throw error;
+				}
+				if (error instanceof NodeApiError) {
+					throw new NodeApiError(this.getNode(), error as unknown as JsonObject);
 				}
 				throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
 			}

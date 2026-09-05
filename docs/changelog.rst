@@ -1,6 +1,21 @@
 Changelog
 =========
 
+0.1.2
+-----
+
+- Node and credential icons now ship a light and a dark variant, so they read on
+  either n8n theme.
+- The node codex files carry the package's own node identifiers, which is what
+  points the editor's help links at this documentation.
+- Errors raised while an item is processed are wrapped so the HTTP status and
+  the item index both reach the n8n UI.
+
+0.1.1
+-----
+
+- Documentation site.
+
 0.1.0
 -----
 

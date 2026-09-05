@@ -1,10 +1,15 @@
 n8n-nodes-zefix-shab
 ====================
 
-Read the Swiss commercial register from n8n. Two nodes: one that looks companies
-up in `Zefix <https://www.zefix.admin.ch>`_ and reads publications from
-`SHAB <https://www.shab.ch>`_, and a polling trigger that starts a workflow when
-the register publishes something about a company you watch.
+Read the Swiss commercial register from n8n.
+
+The register is federal, and it faces the public through two interfaces.
+`Zefix <https://www.zefix.admin.ch>`_ holds the current entry for every company.
+`SHAB <https://www.shab.ch>`_, the official gazette, publishes every change to
+an entry, and a change takes effect for third parties on the day it appears
+there. This package reads both through one node, and adds a polling trigger
+that starts a workflow when the register publishes something about a company
+you watch.
 
 Ten event types are classified out of each publication's structured content, so
 a workflow can branch on a board change without reading the German, French or

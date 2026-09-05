@@ -44,7 +44,7 @@ export class ZefixShabTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Zefix and SHAB Trigger',
 		name: 'zefixShabTrigger',
-		icon: 'file:zefixShab.svg',
+		icon: { light: 'file:zefixShab.svg', dark: 'file:zefixShab.dark.svg' },
 		group: ['trigger'],
 		version: [1],
 		subtitle: '={{ $parameter["watch"] }}',

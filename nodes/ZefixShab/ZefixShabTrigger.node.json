@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-base.zefixShabTrigger",
+	"node": "n8n-nodes-zefix-shab.zefixShabTrigger",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Data & Storage"],
