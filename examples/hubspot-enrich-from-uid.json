@@ -1,0 +1,96 @@
+{
+	"name": "Zefix: enrich a HubSpot company from its UID",
+	"nodes": [
+		{
+			"parameters": {},
+			"id": "c1e6b2f3-0000-4000-8000-000000000001",
+			"name": "When clicking Execute",
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [0, 0]
+		},
+		{
+			"parameters": {
+				"resource": "company",
+				"operation": "getAll",
+				"returnAll": false,
+				"limit": 25
+			},
+			"id": "c1e6b2f3-0000-4000-8000-000000000002",
+			"name": "HubSpot companies",
+			"type": "n8n-nodes-base.hubspot",
+			"typeVersion": 2.1,
+			"position": [220, 0]
+		},
+		{
+			"parameters": {
+				"resource": "company",
+				"operation": "lookup",
+				"lookupBy": "uid",
+				"uid": "={{ $json.properties.uid }}"
+			},
+			"id": "c1e6b2f3-0000-4000-8000-000000000003",
+			"name": "Zefix lookup",
+			"type": "n8n-nodes-zefix-shab.zefixShab",
+			"typeVersion": 1,
+			"position": [440, 0],
+			"credentials": {
+				"zefixApi": { "id": "1", "name": "Zefix account" }
+			}
+		},
+		{
+			"parameters": {
+				"conditions": {
+					"options": { "version": 2, "caseSensitive": true, "typeValidation": "loose" },
+					"combinator": "and",
+					"conditions": [
+						{
+							"operator": { "type": "string", "operation": "exists", "singleValue": true },
+							"leftValue": "={{ $json.uid }}",
+							"rightValue": ""
+						}
+					]
+				},
+				"options": {}
+			},
+			"id": "c1e6b2f3-0000-4000-8000-000000000004",
+			"name": "Found in the register",
+			"type": "n8n-nodes-base.filter",
+			"typeVersion": 2.2,
+			"position": [660, 0]
+		},
+		{
+			"parameters": {
+				"resource": "company",
+				"operation": "upsert",
+				"additionalFields": {
+					"name": "={{ $json.name }}",
+					"city": "={{ $json.address?.city }}",
+					"zip": "={{ $json.address?.swissZipCode }}",
+					"description": "={{ $json.purpose }}"
+				}
+			},
+			"id": "c1e6b2f3-0000-4000-8000-000000000005",
+			"name": "Write back to HubSpot",
+			"type": "n8n-nodes-base.hubspot",
+			"typeVersion": 2.1,
+			"position": [880, 0]
+		}
+	],
+	"connections": {
+		"When clicking Execute": {
+			"main": [[{ "node": "HubSpot companies", "type": "main", "index": 0 }]]
+		},
+		"HubSpot companies": {
+			"main": [[{ "node": "Zefix lookup", "type": "main", "index": 0 }]]
+		},
+		"Zefix lookup": {
+			"main": [[{ "node": "Found in the register", "type": "main", "index": 0 }]]
+		},
+		"Found in the register": {
+			"main": [[{ "node": "Write back to HubSpot", "type": "main", "index": 0 }]]
+		}
+	},
+	"settings": {},
+	"pinData": {}
+}
