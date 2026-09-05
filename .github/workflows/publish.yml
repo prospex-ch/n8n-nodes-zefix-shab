@@ -55,6 +55,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # The tests import from dist/, so eslint's import resolver needs the build
+      # to exist. `n8n-node release` lints before it builds, so build here first.
+      - name: Build
+        run: npm run build
+
       - name: Publish
         # Inside GitHub Actions, `n8n-node release` runs lint, build and then
         # `npm publish` with NPM_CONFIG_PROVENANCE=true.
