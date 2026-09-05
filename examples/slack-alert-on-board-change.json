@@ -12,7 +12,7 @@
 				"triggerOptions": { "lookbackDays": 7 }
 			},
 			"id": "b0f5a1e2-0000-4000-8000-000000000001",
-			"name": "Zefix and SHAB Trigger",
+			"name": "Zefix/SHAB Trigger",
 			"type": "n8n-nodes-zefix-shab.zefixShabTrigger",
 			"typeVersion": 1,
 			"position": [0, 0],
@@ -35,7 +35,7 @@
 		}
 	],
 	"connections": {
-		"Zefix and SHAB Trigger": {
+		"Zefix/SHAB Trigger": {
 			"main": [[{ "node": "Send to Slack", "type": "main", "index": 0 }]]
 		}
 	},

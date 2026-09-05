@@ -75,14 +75,14 @@ function companyRow(company: ZefixCompany): IDataObject {
 
 export class ZefixShab implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zefix and SHAB',
+		displayName: 'Zefix/SHAB',
 		name: 'zefixShab',
 		icon: { light: 'file:zefixShab.svg', dark: 'file:zefixShab.dark.svg' },
 		group: ['input'],
 		version: [1],
 		subtitle: '={{ $parameter["operation"] + ": " + $parameter["resource"] }}',
 		description: 'Read the Swiss commercial register and its official gazette',
-		defaults: { name: 'Zefix and SHAB' },
+		defaults: { name: 'Zefix/SHAB' },
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
 		usableAsTool: true,

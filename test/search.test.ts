@@ -10,7 +10,7 @@ function context(reply: unknown = []) {
 	const calls: unknown[] = [];
 	return {
 		calls,
-		getNode: () => ({ name: 'Zefix and SHAB', type: 'zefixShab', typeVersion: 1 }),
+		getNode: () => ({ name: 'Zefix/SHAB', type: 'zefixShab', typeVersion: 1 }),
 		helpers: {
 			httpRequestWithAuthentication: {
 				call: async (_self: unknown, _credential: string, options: unknown) => {

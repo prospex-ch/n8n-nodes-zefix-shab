@@ -13,8 +13,8 @@ Self-hosted, from the command line:
 
    npm install n8n-nodes-zefix-shab
 
-Restart n8n, and both nodes appear in the node panel under **Zefix and SHAB**
-and **Zefix and SHAB Trigger**.
+Restart n8n, and both nodes appear in the node panel under **Zefix/SHAB**
+and **Zefix/SHAB Trigger**.
 
 What needs an account
 ---------------------
@@ -27,19 +27,19 @@ What needs an account
      - Operation
      - Source
      - Credentials
-   * - Zefix and SHAB
+   * - Zefix/SHAB
      - Company → Lookup
      - Zefix PublicREST
      - required
-   * - Zefix and SHAB
+   * - Zefix/SHAB
      - Company → Search
      - Zefix PublicREST
      - required
-   * - Zefix and SHAB
+   * - Zefix/SHAB
      - Publication → Get Many
      - SHAB
      - only to filter by UID
-   * - Zefix and SHAB Trigger
+   * - Zefix/SHAB Trigger
      - poll
      - SHAB
      - only to watch a UID list

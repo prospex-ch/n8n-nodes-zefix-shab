@@ -27,4 +27,4 @@ The Filter step catches a UID the register has no record of: the lookup returns
 an empty item, so the row stops there.
 
 Both workflows need the credentials of the third-party node they end in. Delete
-that last step and the Zefix and SHAB nodes still run on their own.
+that last step and the Zefix/SHAB nodes still run on their own.

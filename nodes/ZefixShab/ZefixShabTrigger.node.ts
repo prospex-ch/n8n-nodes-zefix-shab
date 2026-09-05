@@ -42,7 +42,7 @@ function daysAgo(count: number): string {
 // eslint-disable-next-line @n8n/community-nodes/node-usable-as-tool
 export class ZefixShabTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Zefix and SHAB Trigger',
+		displayName: 'Zefix/SHAB Trigger',
 		name: 'zefixShabTrigger',
 		icon: { light: 'file:zefixShab.svg', dark: 'file:zefixShab.dark.svg' },
 		group: ['trigger'],
@@ -50,7 +50,7 @@ export class ZefixShabTrigger implements INodeType {
 		subtitle: '={{ $parameter["watch"] }}',
 		description:
 			'Start a workflow when the commercial register publishes an entry about a company you watch',
-		defaults: { name: 'Zefix and SHAB Trigger' },
+		defaults: { name: 'Zefix/SHAB Trigger' },
 		polling: true,
 		inputs: [],
 		outputs: [NodeConnectionTypes.Main],

@@ -29,10 +29,10 @@ npm install n8n-nodes-zefix-shab
 
 | Node | Operation | Reads | Credentials |
 |---|---|---|---|
-| Zefix and SHAB | Company → Lookup | the register entry | required |
-| Zefix and SHAB | Company → Search | the register entry | required |
-| Zefix and SHAB | Publication → Get Many | the gazette | only to filter by UID |
-| Zefix and SHAB Trigger | poll | the gazette | only to watch a UID list |
+| Zefix/SHAB | Company → Lookup | the register entry | required |
+| Zefix/SHAB | Company → Search | the register entry | required |
+| Zefix/SHAB | Publication → Get Many | the gazette | only to filter by UID |
+| Zefix/SHAB Trigger | poll | the gazette | only to watch a UID list |
 
 The gazette is open, so the node runs with no account at all as long as you
 filter by company name or canton.

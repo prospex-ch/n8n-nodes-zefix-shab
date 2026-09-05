@@ -1,7 +1,7 @@
 Trigger
 =======
 
-**Zefix and SHAB Trigger** polls SHAB and starts the workflow on publications it
+**Zefix/SHAB Trigger** polls SHAB and starts the workflow on publications it
 has not emitted before. Rows carry the same fields as
 :doc:`Publication → Get Many <publications>`.
 
