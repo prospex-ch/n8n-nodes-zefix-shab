@@ -1,16 +1,12 @@
 # Publishes this package to npm with a provenance statement whenever a version
 # tag is pushed. See https://docs.npmjs.com/generating-provenance-statements
 #
-# Setup, one of:
-#
-#   A. Trusted publishing (no secret to manage). On npmjs.com, open the package
-#      settings, go to "Trusted Publisher", pick GitHub Actions and enter this
-#      repository (prospex-ch/n8n-nodes-zefix-shab) with workflow file
-#      publish.yml and an empty environment. Leave NPM_TOKEN unset.
-#
-#   B. Granular access token. On npmjs.com generate a token with read/write
-#      access to this package, then add it in GitHub under Settings → Secrets
-#      and variables → Actions as NPM_TOKEN.
+# Authentication uses npm trusted publishing, configured on npmjs.com under the
+# package settings ("Trusted Publisher": GitHub Actions, repository
+# prospex-ch/n8n-nodes-zefix-shab, workflow publish.yml, empty environment).
+# No secret is involved: GitHub's OIDC token is exchanged for a short-lived
+# credential. The NPM_TOKEN reference below stays as a fallback and resolves to
+# an empty string while no such secret exists.
 #
 # Release flow: run `npm run release` locally. It lints, builds, bumps the
 # version, updates the changelog, commits, tags and pushes. The tag push starts
@@ -38,10 +34,10 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
           cache: 'npm'
