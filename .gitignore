@@ -144,3 +144,9 @@ vite.config.ts.timestamp-*
 
 # Sphinx
 docs/_build/
+
+# ndemo demo recording
+.ndemo/
+demo/verification/verification.yaml
+demo/verification/audio/
+demo/verification/video-raw/

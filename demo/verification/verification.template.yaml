@@ -1,0 +1,175 @@
+app:
+  url: http://localhost:5678/home/workflows
+  viewport:
+    width: 1920
+    height: 1080
+  scale: 2
+  zoom: 1.1
+  colorScheme: light
+  setup:
+    - run: ./demo/verification/scripts/reset.sh
+    - type: type
+      target: { role: textbox, name: "Email" }
+      text: semion.sidorenko@letemps.ch
+      if:
+        visible: "input[type=password]"
+    - type: type
+      target: { role: textbox, name: "Password" }
+      text: DemoPassw0rd!
+      if:
+        visible: "input[type=password]"
+    - type: click
+      target: { role: button, name: "Sign in" }
+      if:
+        visible: "input[type=password]"
+      done:
+        url: "**/home/workflows"
+
+titleCard:
+  title: "n8n-nodes-zefix-shab"
+  subtitle: "Swiss commercial register (Zefix) and official gazette (SHAB) — v0.1.3"
+  duration: 3500
+
+tts:
+  provider: openai
+  voice: alloy
+  speed: 1.0
+
+recording:
+  outputDir: "."
+  fps: 30
+
+segments:
+  - id: intro
+    narration: "This is a local n8n instance, freshly set up. I'm going to install the Zefix and SHAB community node from npm, connect it to the Swiss commercial register, and run the operations it offers."
+    intent: "show the empty n8n workflows overview"
+    actions:
+      - type: wait
+        duration: 2500
+
+  - id: open-community-nodes
+    narration: "Community nodes are installed from Settings."
+    intent: "navigate to Settings, then the Community nodes page"
+    actions:
+      - type: click
+        target: { role: menuitem, name: "Settings" }
+        done:
+          text:
+            selector: "[role=dialog]"
+            has: "Community nodes"
+      - type: wait
+        duration: 1200
+      - type: click
+        target: { role: menuitem, name: "Community nodes" }
+        done:
+          stable: 800
+      - type: wait
+        duration: 1500
+
+  - id: install-package
+    narration: "The package name is n8n-nodes-zefix-shab. This is the same version I'm submitting for verification."
+    intent: "click Install, type the npm package name, accept the risk checkbox, and install"
+    actions:
+      - type: click
+        target: { role: button, name: "Install a community node" }
+        done:
+          stable: 800
+      - type: wait
+        duration: 1000
+      - type: type
+        target: { placeholder: "e.g. n8n-nodes-chatwork" }
+        text: "n8n-nodes-zefix-shab@0.1.3"
+        delay: 60
+      - type: wait
+        duration: 1200
+      - type: click
+        target: { role: checkbox }
+        done:
+          stable: 500
+      - type: wait
+        duration: 1000
+      - type: click
+        target: { selector: "[data-test-id=install-community-package-button]" }
+        done:
+          text:
+            selector: "body"
+            has: "2 nodes"
+          timeout: 120000
+      - type: wait
+        duration: 1500
+
+  - id: installed
+    narration: "Version 0.1.3, installed from npm. It ships two nodes and one credential type."
+    intent: "show the installed package entry and its version number"
+    actions:
+      - type: hover
+        target: { text: "n8n-nodes-zefix-shab" }
+      - type: wait
+        duration: 3000
+      - type: click
+        target: { text: "Settings" }
+        done:
+          url: "**/home/workflows"
+      - type: wait
+        duration: 1000
+
+  - id: new-workflow
+    narration: "Let's create a workflow and add the node."
+    intent: "create a new blank workflow"
+    actions:
+      - type: click
+        target: { role: button, name: "Add new item" }
+        done:
+          stable: 600
+      - type: wait
+        duration: 1000
+
+  - id: add-node
+    narration: "Searching the node panel for Zefix brings up the Zefix and SHAB node."
+    intent: "open the node panel, search for Zefix, and add the regular node"
+    actions: []
+
+  - id: create-credential
+    narration: "The node needs a Zefix PublicREST account. Accounts are issued by the Federal Office of Justice."
+    intent: "open the credential dropdown and choose to create a new credential"
+    actions: []
+
+  - id: fill-credential
+    narration: "I'll enter the username and password issued with the account."
+    intent: "type the username and password into the credential form"
+    actions: []
+
+  - id: test-credential
+    narration: "The credential test calls the Zefix legal-form endpoint. The connection tests successfully."
+    intent: "show the green connection-tested-successfully banner"
+    actions: []
+
+  - id: lookup-uid
+    narration: "The most common action is looking a company up by its Swiss UID. I'll use Nestle's."
+    intent: "configure Company Lookup by UID and execute the step"
+    actions: []
+
+  - id: lookup-result
+    narration: "One item back: the legal name, the seat, the legal form, the register status, and the full list of SHAB publications for that company."
+    intent: "show and scroll the returned JSON output"
+    actions: []
+
+  - id: search-name
+    narration: "The second operation searches the register by company name instead."
+    intent: "switch the operation to Search, type a company name, and execute"
+    actions: []
+
+  - id: publications
+    narration: "The other resource is SHAB itself, the official gazette. This returns the publications for a date range, each one classified into an event type: incorporations, board changes, liquidations, and so on."
+    intent: "switch resource to Publication, set a date range, and execute"
+    actions: []
+
+  - id: trigger-node
+    narration: "Finally, the package ships a polling trigger. It watches SHAB for new publications and fires only on the event types you pick."
+    intent: "add the Zefix and SHAB Trigger node and show its event type options"
+    actions: []
+
+  - id: outro
+    narration: "That's the node: company lookup, name search, gazette publications, and a classified polling trigger, all against the official Swiss registers."
+    intent: "show the finished workflow canvas"
+    actions: []
