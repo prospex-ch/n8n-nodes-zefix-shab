@@ -73,8 +73,13 @@ CHE123456789
 
 The node emits the dotted form for display and sends the compact form to the
 API, which is the only one `/company/uid/{uid}` matches. A UID that is not in
-the register returns an empty item, so a workflow can branch on it. A malformed
-UID is rejected before any request goes out. [Checking a Swiss
+the register returns an empty item, so a workflow can branch on it, and the node
+attaches a hint saying so. Zefix covers the commercial register alone, while
+[uid.admin.ch](https://www.uid.admin.ch) covers every UID unit, so a UID issued
+for VAT alone, an association or a public body is valid there and empty here.
+`CHE-116.320.238`, the VAT group of Banque Cantonale Vaudoise, is one: the bank
+itself is `CHE-105.934.376`. A malformed UID is rejected before any request goes
+out. [Checking a Swiss
 company](https://prospex.ch/guides/check-swiss-company/) covers where each
 format shows up and what the check digit does.
 
@@ -130,7 +135,7 @@ Reads HR publications from the gazette, one row per publication:
 **Filtering by UID needs Zefix credentials.** The gazette has no UID filter:
 `uid`, `hr.uid`, `companyUid` and `hr.uidFormatted` are all accepted and
 silently ignored, and the keyword index holds company names only, so
-`keyword=CHE-116.281.710` returns nothing. The node resolves the UID to a legal
+`keyword=CHE-105.841.533` returns nothing. The node resolves the UID to a legal
 name through Zefix, searches on that name, then keeps the rows whose
 `content.commonsActual.company.uid` matches. Without credentials, filter by
 company name and canton instead.

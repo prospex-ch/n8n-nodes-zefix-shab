@@ -147,6 +147,16 @@ export class ZefixShab implements INodeType {
 							: await getCompanyByEhraid(this, this.getNodeParameter('ehraid', i) as number);
 
 					// No such company. An outage throws instead, from the transport.
+					if (company === null) {
+						this.addExecutionHints({
+							message:
+								lookupBy === 'uid'
+									? `${this.getNodeParameter('uid', i) as string} has no commercial register entry. Zefix covers the register only: a UID issued for VAT alone, an association or a public body is valid at uid.admin.ch and still absent here.`
+									: `EHRA ID ${this.getNodeParameter('ehraid', i) as number} is not in the commercial register.`,
+							location: 'outputPane',
+						});
+					}
+
 					returned.push({ json: company === null ? {} : companyRow(company), pairedItem: i });
 					continue;
 				}

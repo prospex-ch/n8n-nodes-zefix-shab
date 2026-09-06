@@ -48,7 +48,8 @@ export const companyFields: INodeProperties[] = [
 		displayOptions: { show: { resource: ['company'], operation: ['lookup'], lookupBy: ['uid'] } },
 		default: '',
 		placeholder: 'CHE-123.456.789',
-		description: 'CHE-123.456.789, CHE123456789 and 123456789 are all accepted',
+		description:
+			'CHE-123.456.789, CHE123456789 and 123456789 are all accepted. Zefix holds the commercial register only, so a UID issued for VAT alone, an association or a public body has no entry here and returns an empty item.',
 	},
 	{
 		displayName: 'EHRA ID',

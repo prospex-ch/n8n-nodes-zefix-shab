@@ -16,7 +16,12 @@ UID forms are accepted:
 The node emits the dotted form for display and sends the compact form to the
 API, which is the only one ``/company/uid/{uid}`` matches. A UID the register
 has no record of returns an empty item, so a workflow can branch on it with an
-IF node. A malformed UID is rejected before any request goes out.
+IF node, and the node attaches a hint saying so. Zefix covers the commercial
+register alone, while `uid.admin.ch <https://www.uid.admin.ch>`_ covers every
+UID unit, so a UID issued for VAT alone, an association or a public body is
+valid there and empty here. ``CHE-116.320.238``, the VAT group of Banque
+Cantonale Vaudoise, is one: the bank itself is ``CHE-105.934.376``. A malformed
+UID is rejected before any request goes out.
 `Checking a Swiss company <https://prospex.ch/guides/check-swiss-company/>`_
 covers where each format shows up and what the check digit does.
 
