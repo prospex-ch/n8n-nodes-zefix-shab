@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-zefix-shab",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"description": "Read the Swiss commercial register (Zefix) and its official gazette (SHAB) from n8n: company lookup, name search, publications, and a polling trigger with event classification",
 	"license": "MIT",
 	"homepage": "https://prospex.ch",
