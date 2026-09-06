@@ -8,6 +8,8 @@ app:
   colorScheme: light
   setup:
     - run: ./demo/verification/scripts/reset.sh
+    - type: wait
+      duration: 3000
     - type: type
       target: { role: textbox, name: "Email" }
       text: semion.sidorenko@letemps.ch
@@ -27,7 +29,7 @@ app:
 
 titleCard:
   title: "n8n-nodes-zefix-shab"
-  subtitle: "Swiss commercial register (Zefix) and official gazette (SHAB) — v0.1.3"
+  subtitle: "Swiss commercial register (Zefix) and official gazette (SHAB)"
   duration: 3500
 
 tts:
@@ -41,15 +43,16 @@ recording:
 
 segments:
   - id: intro
-    narration: "This is a local n8n instance, freshly set up. I'm going to install the Zefix and SHAB community node from npm, connect it to the Swiss commercial register, and run the operations it offers."
+    narration: "This is a local n8n instance, freshly set up. I'll install the Zefix and SHAB node from npm, connect it to the Swiss commercial register, and run the operations it offers."
     intent: "show the empty n8n workflows overview"
     actions:
       - type: wait
-        duration: 2500
+        duration: 1500
 
   - id: open-community-nodes
     narration: "Community nodes are installed from Settings."
-    intent: "navigate to Settings, then the Community nodes page"
+    intent: "open Settings, then the Community nodes page"
+    timing: parallel
     actions:
       - type: click
         target: { role: menuitem, name: "Settings" }
@@ -58,54 +61,55 @@ segments:
             selector: "[role=dialog]"
             has: "Community nodes"
       - type: wait
-        duration: 1200
+        duration: 900
       - type: click
         target: { role: menuitem, name: "Community nodes" }
         done:
           stable: 800
       - type: wait
-        duration: 1500
+        duration: 1200
 
   - id: install-package
-    narration: "The package name is n8n-nodes-zefix-shab. This is the same version I'm submitting for verification."
-    intent: "click Install, type the npm package name, accept the risk checkbox, and install"
+    narration: "The package is n8n-nodes-zefix-shab. I'm pinning version 0.1.4, the same version I'm submitting for verification."
+    intent: "install the npm package by name and version"
+    timing: parallel
     actions:
       - type: click
         target: { role: button, name: "Install a community node" }
         done:
           stable: 800
       - type: wait
-        duration: 1000
+        duration: 800
       - type: type
         target: { placeholder: "e.g. n8n-nodes-chatwork" }
-        text: "n8n-nodes-zefix-shab@0.1.3"
+        text: "n8n-nodes-zefix-shab@0.1.4"
         delay: 60
       - type: wait
-        duration: 1200
+        duration: 800
       - type: click
         target: { role: checkbox }
         done:
           stable: 500
       - type: wait
-        duration: 1000
+        duration: 800
       - type: click
         target: { selector: "[data-test-id=install-community-package-button]" }
         done:
           text:
             selector: "body"
             has: "2 nodes"
-          timeout: 120000
+          timeout: 180000
       - type: wait
         duration: 1500
 
   - id: installed
-    narration: "Version 0.1.3, installed from npm. It ships two nodes and one credential type."
-    intent: "show the installed package entry and its version number"
+    narration: "Version 0.1.4, from npm. Two nodes and one credential type."
+    intent: "show the installed package entry and version, then return to the overview"
     actions:
       - type: hover
         target: { text: "n8n-nodes-zefix-shab" }
       - type: wait
-        duration: 3000
+        duration: 2500
       - type: click
         target: { text: "Settings" }
         done:
@@ -114,62 +118,339 @@ segments:
         duration: 1000
 
   - id: new-workflow
-    narration: "Let's create a workflow and add the node."
+    narration: "Now a workflow."
     intent: "create a new blank workflow"
+    timing: parallel
     actions:
       - type: click
         target: { role: button, name: "Add new item" }
         done:
           stable: 600
       - type: wait
-        duration: 1000
+        duration: 800
+      - type: click
+        target: { role: menuitem, name: "New workflow" }
+        done:
+          url: "**/workflow/**"
+      - type: wait
+        duration: 1500
+
+  - id: add-trigger
+    narration: "A manual trigger to start it by hand."
+    intent: "add the Manual Trigger node"
+    timing: parallel
+    actions:
+      - type: click
+        target: { role: button, name: "Open nodes panel" }
+        done:
+          visible: "input[placeholder='Search nodes...']"
+      - type: wait
+        duration: 900
+      - type: type
+        target: { placeholder: "Search nodes..." }
+        text: "manual"
+        delay: 90
+      - type: wait
+        duration: 900
+      - type: click
+        target: { text: "Manual Trigger" }
+        done:
+          hidden: "text=What triggers this workflow?"
+      - type: wait
+        duration: 1300
 
   - id: add-node
-    narration: "Searching the node panel for Zefix brings up the Zefix and SHAB node."
-    intent: "open the node panel, search for Zefix, and add the regular node"
-    actions: []
+    narration: "Searching for Zefix brings up the installed package: three actions across two resources, plus one trigger. I'll start with the company lookup."
+    intent: "open the node panel, search Zefix, show the node details, add the lookup action"
+    timing: parallel
+    actions:
+      - type: click
+        target: { role: button, name: "Open nodes panel" }
+        done:
+          visible: "input[placeholder='Search nodes...']"
+      - type: wait
+        duration: 800
+      - type: type
+        target: { placeholder: "Search nodes..." }
+        text: "Zefix"
+        delay: 110
+      - type: wait
+        duration: 1300
+      - type: click
+        target: { text: "Zefix/SHAB" }
+        done:
+          stable: 800
+      - type: wait
+        duration: 3500
+      - type: click
+        target: { text: "Look up a company" }
+        done:
+          stable: 1000
+      - type: wait
+        duration: 1500
 
   - id: create-credential
     narration: "The node needs a Zefix PublicREST account. Accounts are issued by the Federal Office of Justice."
-    intent: "open the credential dropdown and choose to create a new credential"
-    actions: []
+    intent: "open the credential form"
+    timing: parallel
+    actions:
+      - type: click
+        target: { role: button, name: "Set up credential" }
+        done:
+          stable: 1000
+      - type: wait
+        duration: 1500
 
   - id: fill-credential
-    narration: "I'll enter the username and password issued with the account."
-    intent: "type the username and password into the credential form"
-    actions: []
+    narration: "Username and password, then save."
+    intent: "fill the credential and save it"
+    timing: parallel
+    actions:
+      - type: type
+        target: { selector: "[data-test-id=parameter-input-username] input" }
+        text: "__ZEFIX_USER__"
+        delay: 55
+      - type: wait
+        duration: 600
+      - type: type
+        target: { selector: "[data-test-id=parameter-input-password] input" }
+        text: "__ZEFIX_PASS__"
+        delay: 45
+      - type: wait
+        duration: 800
+      - type: click
+        target: { role: button, name: "Save" }
+        done:
+          stable: 800
+          timeout: 30000
+      - type: wait
+        duration: 1500
 
   - id: test-credential
-    narration: "The credential test calls the Zefix legal-form endpoint. The connection tests successfully."
-    intent: "show the green connection-tested-successfully banner"
-    actions: []
+    narration: "Saving runs the credential test, which calls the Zefix legal-form endpoint. Reopening the credential shows the result: connection tested successfully."
+    intent: "reopen the credential to show the connection test result"
+    actions:
+      - type: click
+        target: { selector: "[data-test-id=credential-edit-button]" }
+        done:
+          visible: "[data-test-id=credential-edit-dialog]"
+      - type: wait
+        duration: 3500
+      - type: click
+        target: { role: button, name: "Close this dialog" }
+        done:
+          hidden: "[data-test-id=credential-edit-dialog]"
+      - type: wait
+        duration: 1000
 
   - id: lookup-uid
-    narration: "The most common action is looking a company up by its Swiss UID. I'll use Nestle's."
-    intent: "configure Company Lookup by UID and execute the step"
-    actions: []
+    narration: "The most common action is a lookup by Swiss UID. I'll use Nestle's."
+    intent: "enter the UID and execute the step"
+    timing: parallel
+    actions:
+      - type: type
+        target: { placeholder: "CHE-123.456.789" }
+        text: "CHE-105.909.036"
+        delay: 90
+      - type: wait
+        duration: 1000
+      - type: click
+        target: { selector: "[data-test-id=node-execute-button]" }
+        done:
+          text:
+            selector: "[data-test-id=output-panel]"
+            has: "Nestl"
+          timeout: 60000
+      - type: wait
+        duration: 2000
 
   - id: lookup-result
-    narration: "One item back: the legal name, the seat, the legal form, the register status, and the full list of SHAB publications for that company."
-    intent: "show and scroll the returned JSON output"
-    actions: []
+    narration: "One item back. The legal name and its translations, the seat, the legal form in four languages, the register status, the statutory purpose and the address."
+    intent: "switch the output to JSON and hold on it"
+    timing: parallel
+    actions:
+      - type: click
+        target: { selector: "[data-test-id=output-panel] :text-is(\"JSON\")" }
+        done:
+          stable: 700
+      - type: wait
+        duration: 6000
 
   - id: search-name
-    narration: "The second operation searches the register by company name instead."
-    intent: "switch the operation to Search, type a company name, and execute"
-    actions: []
+    narration: "The second operation searches the register by name instead of by identifier."
+    intent: "switch the operation to Search, enter a name and execute"
+    timing: parallel
+    actions:
+      - type: click
+        target: { selector: "[data-test-id=parameter-input-operation]" }
+        done:
+          stable: 600
+      - type: wait
+        duration: 800
+      - type: click
+        target: { role: option, name: "Search Find companies by name" }
+        done:
+          stable: 800
+      - type: wait
+        duration: 900
+      - type: type
+        target: { placeholder: "Migro*" }
+        text: "Migros"
+        delay: 90
+      - type: wait
+        duration: 900
+      - type: click
+        target: { selector: "[data-test-id=node-execute-button]" }
+        done:
+          text:
+            selector: "[data-test-id=output-panel]"
+            has: "Migros"
+          timeout: 60000
+      - type: wait
+        duration: 4000
 
   - id: publications
-    narration: "The other resource is SHAB itself, the official gazette. This returns the publications for a date range, each one classified into an event type: incorporations, board changes, liquidations, and so on."
-    intent: "switch resource to Publication, set a date range, and execute"
-    actions: []
+    narration: "The other resource is SHAB, the official gazette, where every change to the register is published. Filtered to one company from the start of the year."
+    intent: "switch to the Publication resource, set the filter and date, and execute"
+    timing: parallel
+    actions:
+      - type: click
+        target: { selector: "[data-test-id=parameter-input-resource]" }
+        done:
+          stable: 600
+      - type: wait
+        duration: 800
+      - type: click
+        target: { role: option, name: "Publication" }
+        done:
+          stable: 800
+      - type: wait
+        duration: 1000
+      - type: type
+        target: { placeholder: "CHE-123.456.789" }
+        text: "CHE-105.909.036"
+        delay: 80
+      - type: wait
+        duration: 800
+      - type: type
+        target: { selector: "[data-test-id=parameter-input-startDate] input" }
+        text: "2026-01-01 00:00:00"
+        delay: 55
+      - type: press
+        key: "Enter"
+      - type: wait
+        duration: 1200
+      - type: click
+        target: { selector: "[data-test-id=node-execute-button]" }
+        done:
+          text:
+            selector: "[data-test-id=output-panel]"
+            has: "eventTypes"
+          timeout: 90000
+      - type: wait
+        duration: 2000
+
+  - id: publications-result
+    narration: "Eight publications, each with its gazette number, its date, the cantons it was published in, the title in four languages, a link back to the source, and an event type the node derives from the publication's content. This one is a change of officers."
+    intent: "hold on the classified publication output"
+    actions:
+      - type: wait
+        duration: 3000
 
   - id: trigger-node
-    narration: "Finally, the package ships a polling trigger. It watches SHAB for new publications and fires only on the event types you pick."
-    intent: "add the Zefix and SHAB Trigger node and show its event type options"
-    actions: []
+    narration: "Finally, the package ships a polling trigger that watches the gazette for new publications."
+    intent: "add the Zefix/SHAB Trigger node"
+    timing: parallel
+    actions:
+      - type: press
+        key: "Escape"
+      - type: wait
+        duration: 1200
+      - type: click
+        target: { role: button, name: "Open nodes panel" }
+        done:
+          visible: "input[placeholder='Search nodes...']"
+      - type: wait
+        duration: 800
+      - type: type
+        target: { placeholder: "Search nodes..." }
+        text: "Zefix"
+        delay: 100
+      - type: wait
+        duration: 1200
+      - type: click
+        target: { text: "Zefix/SHAB" }
+        done:
+          stable: 800
+      - type: wait
+        duration: 1200
+      - type: click
+        target: { text: "Triggers (1)" }
+        done:
+          stable: 700
+      - type: wait
+        duration: 1000
+      - type: click
+        target: { text: "On new Zefix/SHAB event" }
+        done:
+          stable: 1200
+      - type: wait
+        duration: 1500
+
+  - id: trigger-config
+    narration: "It can watch a list of UIDs, a company name, or the whole register. I'll watch Nestle, and fire only on the events I care about: the node classifies each publication into incorporations, seat and name changes, capital increases, changes of officers, liquidations and deletions."
+    intent: "enter the UID and open the event types list"
+    timing: parallel
+    actions:
+      - type: type
+        target: { placeholder: "CHE-123.456.789, CHE-987.654.321" }
+        text: "CHE-105.909.036"
+        delay: 80
+      - type: wait
+        duration: 1000
+      - type: click
+        target: { selector: "[data-test-id=parameter-input-eventTypes]" }
+        done:
+          stable: 700
+      - type: wait
+        duration: 4500
+      - type: click
+        target: { role: option, name: "OFFICERS_CHANGED" }
+        done:
+          stable: 700
+      - type: wait
+        duration: 1000
+      - type: press
+        key: "Escape"
+      - type: wait
+        duration: 800
+
+  - id: trigger-fetch
+    narration: "Fetch Test Event reads back a sample so the shape of the event is visible while the workflow is being built."
+    intent: "fetch a test event and show the row"
+    timing: parallel
+    actions:
+      - type: click
+        target: { selector: "[data-test-id=node-execute-button]" }
+        done:
+          text:
+            selector: "[data-test-id=output-panel]"
+            has: "OFFICERS_CHANGED"
+          timeout: 120000
+      - type: wait
+        duration: 5000
 
   - id: outro
     narration: "That's the node: company lookup, name search, gazette publications, and a classified polling trigger, all against the official Swiss registers."
-    intent: "show the finished workflow canvas"
-    actions: []
+    intent: "close the node and show the finished canvas"
+    actions:
+      - type: press
+        key: "Escape"
+      - type: wait
+        duration: 1200
+      - type: click
+        target: { role: button, name: "Zoom to Fit" }
+        done:
+          stable: 700
+      - type: wait
+        duration: 3000
