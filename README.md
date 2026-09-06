@@ -161,7 +161,11 @@ day the trigger has already read still comes through, and the rows already
 emitted are not repeated.
 
 In manual mode the trigger returns one recent item so you can see the shape
-while building, and leaves the stored position untouched.
+while building, and leaves the stored position untouched. A watch scoped to a
+UID list or a name reads back a year in that mode, because a single company
+publishes a handful of times a year and **Lookback Days** is meant for the
+schedule, not for finding a sample. A watch on everything keeps the window it is
+given, since a day of the whole register is never empty.
 
 ### Event types
 

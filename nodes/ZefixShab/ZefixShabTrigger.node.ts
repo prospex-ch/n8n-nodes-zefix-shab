@@ -8,6 +8,7 @@ import type {
 import { NodeConnectionTypes } from 'n8n-workflow';
 
 import { triggerFields } from './descriptions/TriggerDescription';
+import { TRIGGER_MANUAL_LOOKBACK_DAYS } from './helpers/constants';
 import type { EventType } from './helpers/events';
 import { toRow } from './helpers/publication';
 import { requireUid, sameUid } from './helpers/uid';
@@ -87,10 +88,20 @@ export class ZefixShabTrigger implements INodeType {
 		// A first run records where it got to and emits nothing, so switching
 		// the workflow on does not replay the archive.
 		const firstRun = staticData.lastDate === undefined;
+
+		// A company publishes a handful of times a year, so a manual poll over
+		// the default window comes back empty and Fetch Test Event reads that
+		// as a broken node. A watch scoped to a UID list or a name is a keyword
+		// query, cheap enough to run over a year to find one row to show.
+		const window =
+			manual && watch !== 'all'
+				? Math.max(lookbackDays, TRIGGER_MANUAL_LOOKBACK_DAYS)
+				: lookbackDays;
+
 		baseQuery.dateStart =
 			!manual && !firstRun && staticData.lastDate !== undefined
 				? staticData.lastDate
-				: daysAgo(lookbackDays);
+				: daysAgo(window);
 
 		const wanted: string[] = [];
 		const queries: ShabQuery[] = [];

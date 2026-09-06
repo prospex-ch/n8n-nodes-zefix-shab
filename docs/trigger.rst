@@ -38,3 +38,9 @@ through, and rows already emitted are not repeated.
 In manual mode the trigger returns one recent item so you can see the shape
 while building, and leaves the stored position untouched. Pinning that item lets
 you build the rest of the workflow without polling again.
+
+A watch scoped to a UID list or a name reads back a year in that mode. A single
+company publishes a handful of times a year, so **Lookback Days**, which is
+sized for the polling schedule, would leave **Fetch Test Event** with nothing to
+show. A watch on everything keeps the window it is given, since a day of the
+whole register is never empty.

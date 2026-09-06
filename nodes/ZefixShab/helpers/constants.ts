@@ -16,6 +16,9 @@ export const SHAB_MAX_ATTEMPTS = 4;
 export const SHAB_TIMEOUT_MS = 30_000;
 export const SHAB_MAX_PAGE_SIZE = 2_000;
 
+/** How far a manual poll reads back when the query is scoped to one company. */
+export const TRIGGER_MANUAL_LOOKBACK_DAYS = 365;
+
 /** The 26 cantons, keyed by the two-letter code the registers publish. */
 export const CANTONS: Array<{ name: string; value: string }> = [
 	{ name: 'Aargau', value: 'AG' },
